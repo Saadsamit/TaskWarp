@@ -1,11 +1,14 @@
 import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
 import {
+  GithubAuthProvider,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import auth from "./../firebase/firebase.config";
 export const myAuthProvider = createContext({});
@@ -17,14 +20,30 @@ const AuthProvider = ({ children }) => {
     isLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
-  const logoutUser =()=>{
-    isLoading(true)
-    return signOut(auth)
-}
-const loginUser = (email,password)=>{
-    isLoading(true)
-    return signInWithEmailAndPassword(auth,email,password)
-}
+  const gitHubLoginUser = () => {
+    const gitHubProvider = new GithubAuthProvider();
+    isLoading(true);
+    return signInWithPopup(auth, gitHubProvider);
+  };
+  const createUser = (email, password) => {
+    isLoading(true);
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+  const updateUser = (name, image) => {
+    isLoading(true);
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: image,
+    });
+  };
+  const loginUser = (email, password) => {
+    isLoading(true);
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+  const logoutUser = () => {
+    isLoading(true);
+    return signOut(auth);
+  };
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -34,7 +53,17 @@ const loginUser = (email,password)=>{
       unSubscribe();
     };
   }, []);
-  const contextData = { user, loading, isLoading, googleLoginUser,logoutUser,loginUser };
+  const contextData = {
+    user,
+    loading,
+    isLoading,
+    googleLoginUser,
+    gitHubLoginUser,
+    logoutUser,
+    loginUser,
+    createUser,
+    updateUser,
+  };
   return (
     <myAuthProvider.Provider value={contextData}>
       {children}

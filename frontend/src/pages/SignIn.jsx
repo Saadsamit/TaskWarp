@@ -8,12 +8,24 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 
 const SignIn = () => {
-  const { isLoading, googleLoginUser, loginUser } = useContext(myAuthProvider);
+  const { isLoading, loading, gitHubLoginUser, googleLoginUser, loginUser } =
+    useContext(myAuthProvider);
   const [passwordShow, setPasswordShow] = useState(false);
   const { register, reset, handleSubmit } = useForm();
   const navigate = useNavigate();
   const handleGoogle = () => {
     googleLoginUser()
+      .then(() => {
+        toast.success("Sign in Successfully ");
+        location.state ? navigate(location.state) : navigate("/");
+      })
+      .catch(() => {
+        isLoading(false);
+        toast.error("fail to Sign in");
+      });
+  };
+  const handleGitHub = () => {
+    gitHubLoginUser()
       .then(() => {
         toast.success("Sign in Successfully ");
         location.state ? navigate(location.state) : navigate("/");
@@ -84,7 +96,13 @@ const SignIn = () => {
           </div>
 
           <div className="form-control mt-6">
-            <button className="btnStyle">sign in</button>
+            <button className="btnStyle">
+              {loading ? (
+                <span className="loading loading-spinner text-white"></span>
+              ) : (
+                "Sign In"
+              )}
+            </button>
           </div>
           <p className="text-orange-900 text-center">
             If You {"Don't"} Have Account{" "}
@@ -105,6 +123,7 @@ const SignIn = () => {
             sign in with <FcGoogle className="ml-2 text-2xl" />
           </button>
           <button
+          onClick={handleGitHub}
             type="button"
             className="border flex justify-center py-2 items-center capitalize hover:border-orange-500 hover:text-orange-500 rounded-full"
           >
