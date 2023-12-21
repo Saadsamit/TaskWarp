@@ -50,15 +50,6 @@ const SignUp = () => {
               </div>
             </div>
           </div>
-          <div className="text-end">
-            <a
-              href="#"
-              className="label-text-alt text-orange-500 link link-hover"
-            >
-              Forgot password?
-            </a>
-          </div>
-
           <div className="form-control mt-6">
             <button className="btnStyle">sign up</button>
           </div>
