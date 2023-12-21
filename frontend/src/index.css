@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Roboto&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1,h2,h3,h4,h5,h6,a,button{
+    @apply font-Poppins font-semibold
+}
+.btnStyle{
+    @apply btn bg-orange-400 hover:bg-orange-500 text-white border-none capitalize
+}
+.inputFileStyle{
+    @apply file-input file:bg-orange-400 focus:outline-none bg-slate-100 file:border-orange-500 file:text-white file-input-bordered w-full
+}
+.inputStyle{
+   @apply input bg-slate-100 border-x-0 border-t-0 border-b-4 focus:outline-none focus:border-orange-400 border-base-300
+}
+#Navbar ul .active{
+    @apply bg-orange-400 hover:bg-orange-500 text-white
+}
