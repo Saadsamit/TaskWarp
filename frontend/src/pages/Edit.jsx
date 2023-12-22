@@ -1,34 +1,47 @@
+import { useNavigate, useParams } from "react-router-dom";
+import GetATask from "../api/imageUploder/GetATask";
+import useAxios from "../hooks/useAxios";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import PropTypes from "prop-types";
-import DatePicker from "react-datepicker";
-import { useContext, useState } from "react";
-import useAxios from "./../hooks/useAxios";
 import toast from "react-hot-toast";
-import { myAuthProvider } from "../provider/AuthProvider";
-const Task = ({ setIsAdding }) => {
-  const {user} = useContext(myAuthProvider)
+import DatePicker from "react-datepicker";
+
+const Edit = () => {
+  const { id } = useParams();
+  const [data,refetch, isPending] = GetATask(id);
+  const navigate = useNavigate()
   const axios = useAxios();
-  const now = new Date();
-  const [deadline, setDeadline] = useState(now);
   const { register, handleSubmit, reset } = useForm();
+  const [deadline, setDeadline] = useState(new Date());
+  useEffect(() => {
+    data?.deadline ? setDeadline(new Date(data?.deadline)) : null;
+  }, [data?.deadline]);
+  if (isPending) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <span className="loading loading-infinity loading-lg"></span>
+      </div>
+    );
+  }
   const onSubmit = (data) => {
     const task = data.toDoTask;
     const description = data.toDoDis;
     const priority = data.priority;
-    const userEmail = user?.email
-    const taskAddDate = now;
-    const status = "to-do";
-    const obj = { task, description, taskAddDate,userEmail, deadline, priority, status };
-    axios.post("/add-task", obj).then(() => {
-      toast.success("Task added successfully")
-      reset();
-      setIsAdding(false);
-    }).catch(()=>{
-      toast.error("fail to add Task")
-    })
+    const obj = { task, description, deadline, priority };
+    axios
+      .put(`/update-a-todo/${id}`, obj)
+      .then(() => {
+        toast.success("Task edit successfully");
+        reset();
+        refetch()
+        navigate("/dashboard")
+      })
+      .catch(() => {
+        toast.error("fail to edit Task");
+      });
   };
   return (
-    <div>
+    <div className="py-10">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-2xl shadow-xl sm:p-10 p-5 rounded-xl mx-auto flex flex-col gap-4 pt-10"
@@ -38,7 +51,9 @@ const Task = ({ setIsAdding }) => {
           name="subject"
           className="inputStyle w-full"
           type="text"
-          {...register("toDoTask", { required: true })}
+          required
+          defaultValue={data?.task}
+          {...register("toDoTask")}
         />
         <div className="flex sm:flex-row flex-col gap-4">
           <div className="sm:w-1/2" id="addTask">
@@ -50,7 +65,9 @@ const Task = ({ setIsAdding }) => {
           </div>
           <select
             className="inputStyle sm:w-1/2"
-            {...register("priority", { required: true })}
+            required
+            defaultValue={data?.priority}
+            {...register("priority")}
           >
             <option disabled selected>
               select priority
@@ -64,7 +81,9 @@ const Task = ({ setIsAdding }) => {
           placeholder="Enter Your task description"
           name="message"
           className="inputStyle pt-2 w-full min-h-[100px]"
-          {...register("toDoDis", { required: true })}
+          required
+          defaultValue={data?.description}
+          {...register("toDoDis")}
         ></textarea>
         <div className="text-center">
           <input
@@ -78,8 +97,4 @@ const Task = ({ setIsAdding }) => {
   );
 };
 
-export default Task;
-
-Task.propTypes = {
-  setIsAdding: PropTypes.func.isRequired,
-};
+export default Edit;

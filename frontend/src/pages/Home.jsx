@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div>
       <Banner />
-      <Who_it_is_for />
+      <Who_it_is_for istrue={true} />
       <Contact />
     </div>
   );

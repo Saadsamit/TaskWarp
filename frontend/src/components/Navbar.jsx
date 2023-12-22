@@ -18,8 +18,8 @@ const Navbar = () => {
       linkName: "about",
     },
     {
-      path: "/blog",
-      linkName: "blog",
+      path: "/contact",
+      linkName: "contact",
     },
   ];
   const handleLogout = ()=>{
