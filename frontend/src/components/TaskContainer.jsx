@@ -14,7 +14,6 @@ const TaskContainer = () => {
       </div>
     );
   }
-
   return (
     <Container>
       <DndProvider backend={HTML5Backend}>
@@ -23,11 +22,13 @@ const TaskContainer = () => {
           <Dustbin name={"onGoing"}/>
           <Dustbin name={"completed"}/>
         </div>
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-          {data.map((item) => (
+        {
+          data.length > 0 ? <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+          {data?.map((item) => (
             <TaskList key={item?._id} data={item} refetch={refetch} />
           ))}
-        </div>
+        </div> : null
+        }
       </DndProvider>
     </Container>
   );

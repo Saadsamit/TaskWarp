@@ -12,7 +12,7 @@ const GetTask = () => {
     return data;
   };
   
-  const {data,refetch,isPending} = useQuery({
+  const {data=[],refetch,isPending} = useQuery({
     queryKey: ['get todo',user?.email],
     queryFn: DataFunc,
     enabled: !loaging

@@ -5,7 +5,9 @@ import { useContext, useState } from "react";
 import useAxios from "./../hooks/useAxios";
 import toast from "react-hot-toast";
 import { myAuthProvider } from "../provider/AuthProvider";
+import GetTask from "../api/imageUploder/GetTask";
 const Task = ({ setIsAdding }) => {
+  const [,,refetch] = GetTask()
   const {user} = useContext(myAuthProvider)
   const axios = useAxios();
   const now = new Date();
@@ -22,6 +24,7 @@ const Task = ({ setIsAdding }) => {
     axios.post("/add-task", obj).then(() => {
       toast.success("Task added successfully")
       reset();
+      refetch()
       setIsAdding(false);
     }).catch(()=>{
       toast.error("fail to add Task")

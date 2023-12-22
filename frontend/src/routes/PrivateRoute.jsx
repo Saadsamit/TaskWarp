@@ -9,7 +9,7 @@ const PrivateRoute = ({children}) => {
         return <div className="min-h-screen flex justify-center items-center"><span className="loading loading-infinity loading-lg"></span></div>
     }
     if(!user?.email){
-        return <Navigate to="/sing-in"/>
+        return <Navigate to="/sign-in"/>
     }
     return children
 };
