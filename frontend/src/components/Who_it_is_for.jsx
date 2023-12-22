@@ -36,7 +36,7 @@ const Who_it_is_for = () => {
             <h1 className="sm:text-5xl text-4xl font-bold text-orange-950">
             This todo website is <span className="text-orange-400">For Developers</span>
             </h1>
-            {texts.map((text,idx)=><p key={idx} className="text-orange-900 flex">
+            {texts.map((text,idx)=><p key={idx} className="text-orange-900 flex items-center">
                 <div className="w-1/12"><FaCheckCircle className="text-xl text-orange-500 mr-5 "/></div> <div className="w-11/12">{text?.subText}</div>
             </p>)}
             

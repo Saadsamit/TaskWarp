@@ -4,26 +4,31 @@ import Home from "../pages/Home";
 import ErrorPage from "../pages/ErrorPage";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
+import Dashboard from "../pages/Dashboard";
 
 const Router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <Home/>
+        element: <Home />,
       },
       {
-        path: 'sign-in',
-        element: <SignIn/>
+        path: "sign-in",
+        element: <SignIn />,
       },
       {
-        path: 'sign-up',
-        element: <SignUp/>
+        path: "sign-up",
+        element: <SignUp />,
       },
-    ]
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+    ],
   },
 ]);
 
